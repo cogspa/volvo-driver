@@ -8,6 +8,7 @@ import { Controls } from './Controls.js'
 import { Ground } from './Ground.js'
 import { Vehicle } from './Vehicle.js'
 import { Camera } from './Camera.js'
+import { Billboards } from './Billboards.js'
 
 async function init() {
     // ─── Rapier Physics (must be loaded async) ───────────────────────
@@ -69,6 +70,7 @@ async function init() {
     scene.add(chaseCamera.camera)
 
     const ground = new Ground(scene, world, RAPIER)
+    const billboards = new Billboards(scene, world, RAPIER)
 
     const vehicle = new Vehicle(scene, world, RAPIER)
     
