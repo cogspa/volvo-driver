@@ -368,22 +368,21 @@ export class Vehicle {
     _unflip() {
         if (!this.chassisBody) return
 
-        const mass = this.chassisBody.mass()
+        // Get current position and preserve the car's Y rotation (heading)
+        const pos = this.chassisBody.translation()
+        const euler = new THREE.Euler().setFromQuaternion(this.quaternion, 'YXZ')
 
-        // Pop the car up into the air
-        const impulse = { x: 0, y: 8 * mass, z: 0 }
-        this.chassisBody.applyImpulse(impulse, true)
+        // Teleport: same X/Z, lift up 2 units, keep heading, zero out tilt
+        const uprightQuat = new THREE.Quaternion().setFromEuler(
+            new THREE.Euler(0, euler.y, 0)
+        )
 
-        // Apply a corrective torque to roll it back over
-        const sideward = new THREE.Vector3(0, 0, 1).applyQuaternion(this.quaternion)
-        const upDot = this.upward.dot(new THREE.Vector3(0, -1, 0))
-        const torqueStrength = 1.2 * mass
+        this.chassisBody.setTranslation({ x: pos.x, y: pos.y + 2, z: pos.z }, true)
+        this.chassisBody.setRotation(uprightQuat, true)
+        this.chassisBody.setLinvel({ x: 0, y: 0, z: 0 }, true)
+        this.chassisBody.setAngvel({ x: 0, y: 0, z: 0 }, true)
 
-        const torque = new THREE.Vector3(torqueStrength, 0, 0)
-        torque.applyQuaternion(this.chassisBody.rotation())
-        this.chassisBody.applyTorqueImpulse(torque, true)
-
-        console.log('🔄 Auto-unflip triggered')
+        console.log('🔄 Auto-unflip: car righted at current position')
     }
 
     reset() {
