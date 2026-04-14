@@ -133,18 +133,14 @@ export class Ground {
         // ── Starter cubes near spawn (car starts at 0,0,0 facing +X) ──
         placeCube(-4,  3, 1.0, 1.5, 1.0, 0x44bbff)   // behind-left
         placeCube(-4, -3, 1.2, 2.0, 1.2, 0xff4466)   // behind-right
-        placeCube(-3,  0, 0.8, 1.0, 0.8, 0xffcc33)   // directly behind
-        placeCube( 5,  4, 1.0, 1.8, 1.0, 0x66ff88)   // ahead-left
-        placeCube( 5, -4, 0.9, 1.4, 0.9, 0xaa55ff)   // ahead-right
-        placeCube( 8,  0, 1.5, 2.5, 1.5, 0xff8833)   // further ahead
 
-        // ── Random cubes throughout the world ──
+        // ── Random cubes throughout the world (further out, discovered while driving) ──
         for (let i = 0; i < cubeCount; i++) {
             let x, z
             do {
                 x = (Math.random() - 0.5) * spreadRadius * 2
                 z = (Math.random() - 0.5) * spreadRadius * 2
-            } while (Math.abs(x) < 6 && Math.abs(z) < 6) // keep a clear area around spawn
+            } while (Math.abs(x) < 15 && Math.abs(z) < 15)
 
             // Random size
             const sizeX = 0.5 + Math.random() * 1.5
