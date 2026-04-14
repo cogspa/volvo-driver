@@ -70,16 +70,16 @@ export class Billboards {
             world.createCollider(postColliderDesc)
         }
 
-        // ── Starter billboard behind the car (car spawns at 0,0,0 facing +X) ──
-        placeBillboard(-6, 0, Math.PI / 2) // behind car, facing the camera
+        // ── Starter billboard — right side of screen at launch ──
+        placeBillboard(4, -7, Math.PI * 0.75)
 
-        // ── Random billboards throughout the world ──
+        // ── Random billboards throughout the world (discovered while driving) ──
         for (let i = 0; i < billboardCount; i++) {
             let x, z
             do {
                 x = (Math.random() - 0.5) * spreadRadius * 2
                 z = (Math.random() - 0.5) * spreadRadius * 2
-            } while (Math.abs(x) < 10 && Math.abs(z) < 10)
+            } while (Math.abs(x) < 20 && Math.abs(z) < 20)
 
             placeBillboard(x, z, Math.random() * Math.PI * 2)
         }
