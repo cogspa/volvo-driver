@@ -7,6 +7,12 @@ export default defineConfig({
         wasm(),
         topLevelAwait()
     ],
+    build: {
+        target: 'esnext',
+        outDir: 'dist',
+        emptyOutDir: true,
+        sourcemap: false
+    },
     server: {
         port: 5174
     }
