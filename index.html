@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volvo Driver</title>
+    <meta name="description" content="Drive a Volvo on an open plane with physics-based controls.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <canvas id="game-canvas"></canvas>
+    <div id="hud">
+        <div id="speed-display">
+            <span id="speed-value">0</span>
+            <span id="speed-unit">km/h</span>
+        </div>
+        <div id="controls-hint">
+            <span>W/↑ Accelerate</span>
+            <span>S/↓ Brake/Reverse</span>
+            <span>A/↓ Steer Left</span>
+            <span>D/→ Steer Right</span>
+            <span>SPACE Boost</span>
+            <span>R Reset</span>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
