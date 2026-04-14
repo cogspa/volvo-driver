@@ -107,8 +107,39 @@ export class Ground {
         // Shared geometry — we vary the scale per instance
         const baseGeometry = new THREE.BoxGeometry(1, 1, 1)
 
+        // Helper to place a single cube (visual + physics)
+        const placeCube = (x, z, sizeX, sizeY, sizeZ, color) => {
+            const material = new THREE.MeshStandardMaterial({
+                color: color,
+                roughness: 0.4,
+                metalness: 0.1,
+            })
+            const mesh = new THREE.Mesh(baseGeometry, material)
+            mesh.scale.set(sizeX, sizeY, sizeZ)
+            mesh.position.set(x, sizeY / 2, z)
+            mesh.rotation.y = Math.random() * Math.PI * 2
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            this.scene.add(mesh)
+
+            const colliderDesc = RAPIER.ColliderDesc.cuboid(sizeX / 2, sizeY / 2, sizeZ / 2)
+                .setTranslation(x, sizeY / 2, z)
+                .setRotation({ x: 0, y: Math.sin(mesh.rotation.y / 2), z: 0, w: Math.cos(mesh.rotation.y / 2) })
+                .setFriction(0.5)
+                .setRestitution(0.3)
+            world.createCollider(colliderDesc)
+        }
+
+        // ── Starter cubes near spawn (car starts at 0,0,0 facing +X) ──
+        placeCube(-4,  3, 1.0, 1.5, 1.0, 0x44bbff)   // behind-left
+        placeCube(-4, -3, 1.2, 2.0, 1.2, 0xff4466)   // behind-right
+        placeCube(-3,  0, 0.8, 1.0, 0.8, 0xffcc33)   // directly behind
+        placeCube( 5,  4, 1.0, 1.8, 1.0, 0x66ff88)   // ahead-left
+        placeCube( 5, -4, 0.9, 1.4, 0.9, 0xaa55ff)   // ahead-right
+        placeCube( 8,  0, 1.5, 2.5, 1.5, 0xff8833)   // further ahead
+
+        // ── Random cubes throughout the world ──
         for (let i = 0; i < cubeCount; i++) {
-            // Random position (avoid spawning right at center where car starts)
             let x, z
             do {
                 x = (Math.random() - 0.5) * spreadRadius * 2

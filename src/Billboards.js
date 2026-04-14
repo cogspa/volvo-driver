@@ -21,50 +21,27 @@ export class Billboards {
         const billboardCount = 20
         const spreadRadius = 70
 
-        // Billboard dimensions (wide landscape-style ad boards, low to ground)
         const width = 6
         const height = 4
         const depth = 0.15
-
-        // Post dimensions (very short — billboard sits near ground)
         const postWidth = 0.25
         const postHeight = 0.5
 
-        for (let i = 0; i < billboardCount; i++) {
-            // Random position (avoid car spawn area)
-            let x, z
-            do {
-                x = (Math.random() - 0.5) * spreadRadius * 2
-                z = (Math.random() - 0.5) * spreadRadius * 2
-            } while (Math.abs(x) < 10 && Math.abs(z) < 10)
-
-            // Random rotation (face random direction)
-            const rotationY = Math.random() * Math.PI * 2
-
-            // ── Billboard panel (the ad itself) ──
+        // Helper to place a single billboard
+        const placeBillboard = (x, z, rotationY) => {
             const panelGeometry = new THREE.BoxGeometry(width, height, depth)
-            
-            // Create materials: ad texture on front and back, grey edges
+
             const edgeMaterial = new THREE.MeshStandardMaterial({
-                color: 0x444444,
-                roughness: 0.8,
-                metalness: 0.2,
+                color: 0x444444, roughness: 0.8, metalness: 0.2,
             })
-            
             const adMaterial = new THREE.MeshStandardMaterial({
-                map: this.texture,
-                roughness: 0.5,
-                metalness: 0.0,
+                map: this.texture, roughness: 0.5, metalness: 0.0,
             })
 
-            // Box materials: [+x, -x, +y, -y, +z (front), -z (back)]
             const panelMaterials = [
-                edgeMaterial, // right edge
-                edgeMaterial, // left edge
-                edgeMaterial, // top edge
-                edgeMaterial, // bottom edge
-                adMaterial,   // front face (the ad)
-                adMaterial,   // back face (the ad)
+                edgeMaterial, edgeMaterial,
+                edgeMaterial, edgeMaterial,
+                adMaterial, adMaterial,
             ]
 
             const panelMesh = new THREE.Mesh(panelGeometry, panelMaterials)
@@ -74,31 +51,37 @@ export class Billboards {
             panelMesh.receiveShadow = true
             this.scene.add(panelMesh)
 
-            // ── Support post ──
             const postGeometry = new THREE.BoxGeometry(postWidth, postHeight, postWidth)
             const postMaterial = new THREE.MeshStandardMaterial({
-                color: 0x555555,
-                roughness: 0.9,
-                metalness: 0.3,
+                color: 0x555555, roughness: 0.9, metalness: 0.3,
             })
-
             const postMesh = new THREE.Mesh(postGeometry, postMaterial)
             postMesh.position.set(x, postHeight / 2, z)
             postMesh.castShadow = true
             postMesh.receiveShadow = true
             this.scene.add(postMesh)
 
-            // ── Physics collider for the post (so car can bump into it) ──
             const postColliderDesc = RAPIER.ColliderDesc.cuboid(
-                postWidth / 2,
-                (postHeight + height) / 2,
-                postWidth / 2
+                postWidth / 2, (postHeight + height) / 2, postWidth / 2
             )
                 .setTranslation(x, (postHeight + height) / 2, z)
                 .setFriction(0.3)
                 .setRestitution(0.2)
-
             world.createCollider(postColliderDesc)
+        }
+
+        // ── Starter billboard behind the car (car spawns at 0,0,0 facing +X) ──
+        placeBillboard(-6, 0, Math.PI / 2) // behind car, facing the camera
+
+        // ── Random billboards throughout the world ──
+        for (let i = 0; i < billboardCount; i++) {
+            let x, z
+            do {
+                x = (Math.random() - 0.5) * spreadRadius * 2
+                z = (Math.random() - 0.5) * spreadRadius * 2
+            } while (Math.abs(x) < 10 && Math.abs(z) < 10)
+
+            placeBillboard(x, z, Math.random() * Math.PI * 2)
         }
     }
 }
