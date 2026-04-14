@@ -21,14 +21,14 @@ export class Billboards {
         const billboardCount = 20
         const spreadRadius = 70
 
-        // Billboard dimensions (tall portrait-style ad boards)
+        // Billboard dimensions (wide landscape-style ad boards, low to ground)
         const width = 6
-        const height = 8
-        const depth = 0.2
+        const height = 4
+        const depth = 0.15
 
-        // Post dimensions
-        const postWidth = 0.3
-        const postHeight = 3
+        // Post dimensions (very short — billboard sits near ground)
+        const postWidth = 0.25
+        const postHeight = 0.5
 
         for (let i = 0; i < billboardCount; i++) {
             // Random position (avoid car spawn area)
