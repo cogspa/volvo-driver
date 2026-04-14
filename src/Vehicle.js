@@ -39,6 +39,11 @@ export class Vehicle {
         this.idleBrake = 0.06
         this.reverseBrake = 0.4
 
+        // Flip detection
+        this.upward = new THREE.Vector3(0, 1, 0)
+        this.flipTimer = 0
+        this.flipThreshold = 1.5 // seconds upside-down before auto-unflip
+
         this.ready = false
     }
 
@@ -344,6 +349,41 @@ export class Vehicle {
                 wheel.suspension.scale.y = suspensionScale
             }
         }
+
+        // ── Auto-unflip detection ──
+        this.upward.set(0, 1, 0).applyQuaternion(this.quaternion)
+        const isUpsideDown = this.upward.dot(new THREE.Vector3(0, -1, 0)) > 0.3
+
+        if (isUpsideDown) {
+            this.flipTimer += dt
+            if (this.flipTimer > this.flipThreshold) {
+                this._unflip()
+                this.flipTimer = 0
+            }
+        } else {
+            this.flipTimer = 0
+        }
+    }
+
+    _unflip() {
+        if (!this.chassisBody) return
+
+        const mass = this.chassisBody.mass()
+
+        // Pop the car up into the air
+        const impulse = { x: 0, y: 8 * mass, z: 0 }
+        this.chassisBody.applyImpulse(impulse, true)
+
+        // Apply a corrective torque to roll it back over
+        const sideward = new THREE.Vector3(0, 0, 1).applyQuaternion(this.quaternion)
+        const upDot = this.upward.dot(new THREE.Vector3(0, -1, 0))
+        const torqueStrength = 1.2 * mass
+
+        const torque = new THREE.Vector3(torqueStrength, 0, 0)
+        torque.applyQuaternion(this.chassisBody.rotation())
+        this.chassisBody.applyTorqueImpulse(torque, true)
+
+        console.log('🔄 Auto-unflip triggered')
     }
 
     reset() {
