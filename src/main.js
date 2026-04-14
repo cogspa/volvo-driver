@@ -31,14 +31,14 @@ async function init() {
 
     // ─── Scene ───────────────────────────────────────────────────────
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x0a0a0f)
-    scene.fog = new THREE.Fog(0x0a0a0f, 50, 150)
+    scene.background = new THREE.Color(0xc8dce8)
+    scene.fog = new THREE.Fog(0xc8dce8, 50, 150)
 
     // ─── Lighting ────────────────────────────────────────────────────
-    const ambientLight = new THREE.AmbientLight(0x334466, 1.0)
+    const ambientLight = new THREE.AmbientLight(0x8899aa, 1.2)
     scene.add(ambientLight)
 
-    const hemiLight = new THREE.HemisphereLight(0x6688cc, 0x222233, 0.8)
+    const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0xb8d4e3, 1.0)
     scene.add(hemiLight)
 
     const dirLight = new THREE.DirectionalLight(0xffeedd, 3.0)
