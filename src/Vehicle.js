@@ -132,7 +132,8 @@ export class Vehicle {
 
         // Main collider
         const mainCollider = this.RAPIER.ColliderDesc.cuboid(1.3, 0.4, 0.85)
-            .setTranslation(0, -0.1, 0)
+            // Lower center of mass drastically so the bottom is heavy
+            .setTranslation(0, -0.45, 0)
             .setMass(2.5)
             .setFriction(0.4)
 
@@ -154,8 +155,10 @@ export class Vehicle {
         const wheelSettings = {
             offset: { x: 0.90, y: 0, z: 0.75 },
             radius: 0.4,
-            suspensionRestLength: 1.23,
-            frictionSlip: 0.9,
+            // Shorten suspension so the car sits lower to the ground
+            suspensionRestLength: 0.85,
+            // Lower friction slip so the car drifts sideways instead of gripping and rolling over
+            frictionSlip: 0.6,
             maxSuspensionForce: 150,
             maxSuspensionTravel: 2,
             sideFrictionStiffness: 3,

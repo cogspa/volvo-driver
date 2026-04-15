@@ -50,6 +50,14 @@ html, body {
     margin: 0;
 }
 
+#title-overlay p.byline {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+    letter-spacing: 1px;
+    color: rgba(40, 55, 80, 0.5);
+}
+
 /* HUD */
 #hud {
     position: fixed;
