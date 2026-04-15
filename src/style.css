@@ -120,3 +120,65 @@ html, body {
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+
+/* Touch Controls */
+#touch-controls {
+    display: none; /* hidden on non-touch devices by default */
+}
+
+@media (pointer: coarse) {
+    #touch-controls {
+        display: block;
+        position: fixed;
+        bottom: 110px;
+        left: 0;
+        right: 0;
+        pointer-events: none; /* so middle is clickable */
+        z-index: 20;
+    }
+
+    .touch-group {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        gap: 15px;
+        pointer-events: auto; /* Buttons are tappable */
+    }
+
+    .touch-left-group {
+        left: 30px;
+    }
+
+    .touch-right-group {
+        right: 30px;
+    }
+
+    .touch-group button {
+        width: 70px;
+        height: 70px;
+        border-radius: 35px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: white;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        -webkit-user-select: none;
+        transition: background 0.1s;
+    }
+
+    .touch-group button:active {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Hide keyboard hints on mobile to save space */
+    #controls-hint {
+        display: none;
+    }
+}

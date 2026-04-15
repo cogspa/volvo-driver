@@ -17,6 +17,9 @@ export class Controls {
 
         window.addEventListener('keydown', this._onKeyDown)
         window.addEventListener('keyup', this._onKeyUp)
+
+        // Wait a tick for the DOM to be ready, then set up touch bounds
+        setTimeout(() => this._setupTouch(), 0)
     }
 
     _onKeyDown(e) {
@@ -26,6 +29,25 @@ export class Controls {
     _onKeyUp(e) {
         this.keys[e.code] = false
         if (e.code === 'KeyR') this.reset = false
+    }
+
+    _setupTouch() {
+        const btnFwd = document.getElementById('touch-fwd')
+        const btnRev = document.getElementById('touch-rev')
+        const btnLeft = document.getElementById('touch-left')
+        const btnRight = document.getElementById('touch-right')
+
+        if (!btnFwd) return
+
+        const bindTouch = (el, code) => {
+            el.addEventListener('touchstart', (e) => { e.preventDefault(); this.keys[code] = true })
+            el.addEventListener('touchend', (e) => { e.preventDefault(); this.keys[code] = false })
+        }
+
+        bindTouch(btnFwd, 'KeyW')
+        bindTouch(btnRev, 'KeyS')
+        bindTouch(btnLeft, 'KeyA')
+        bindTouch(btnRight, 'KeyD')
     }
 
     update() {
