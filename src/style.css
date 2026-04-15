@@ -58,6 +58,19 @@ html, body {
     color: rgba(40, 55, 80, 0.5);
 }
 
+#title-overlay p.byline a {
+    color: inherit;
+    text-decoration: none;
+    pointer-events: auto; /* enable clicking */
+    border-bottom: 1px solid rgba(40, 55, 80, 0.3);
+    transition: all 0.2s ease;
+}
+
+#title-overlay p.byline a:hover {
+    color: rgba(20, 30, 50, 0.9);
+    border-bottom: 1px solid rgba(20, 30, 50, 0.8);
+}
+
 /* HUD */
 #hud {
     position: fixed;
