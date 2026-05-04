@@ -78,8 +78,19 @@ async function init() {
         await vehicle.load('/vehicle/default.glb')
         console.log('✅ Vehicle loaded successfully')
         console.log('   Parts found:', Object.keys(vehicle.parts))
+        
+        // Hide preloader
+        const preloader = document.getElementById('preloader')
+        if (preloader) {
+            preloader.classList.add('hidden')
+        }
     } catch (err) {
         console.error('❌ Failed to load vehicle:', err)
+        // Hide preloader even on error to prevent being stuck
+        const preloader = document.getElementById('preloader')
+        if (preloader) {
+            preloader.classList.add('hidden')
+        }
     }
 
     // ─── Resize ──────────────────────────────────────────────────────
